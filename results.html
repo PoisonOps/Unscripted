@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Scorecard — Unscripted</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="results-page">
+
+  <div id="toast"></div>
+
+  <!-- Nav -->
+  <nav id="results-page-nav">
+    <a href="/" class="nav-logo">Unscripted<span>.</span></a>
+    <div class="nav-right">
+      <a href="/" class="btn btn-ghost btn-sm">&larr; New interview</a>
+      <a href="/dashboard" class="btn btn-outline btn-sm">Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Auth gate (shown when logged out) -->
+  <div id="results-gate">
+    <h2 class="t-section" style="margin-bottom:12px">Your results are ready.</h2>
+    <p class="t-body">Create a free account to see your scorecard, strong moments, and what to improve.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto;">
+      <button class="btn btn-primary btn-full" onclick="openAuthModal('signup')">Create free account</button>
+      <button class="btn btn-outline btn-full" onclick="openAuthModal('login')">Log in</button>
+    </div>
+  </div>
+
+  <!-- Results content (shown when logged in) -->
+  <div id="results-content" class="hidden">
+
+    <!-- Scoring state -->
+    <div id="scoring-state">
+      <div class="spinner" style="width:32px;height:32px;margin:0 auto;"></div>
+      <span class="scoring-label">Analysing your interview...</span>
+      <p style="margin-top:8px;font-size:0.8rem;color:var(--text-faint);font-family:var(--font-mono)">This takes about 10 seconds</p>
+    </div>
+
+    <!-- Scorecard -->
+    <div id="scorecard" class="hidden">
+
+      <!-- Overall score ring -->
+      <div class="score-ring-wrap">
+        <div class="score-ring-title">Overall Score</div>
+        <div class="score-ring-svg">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle class="score-ring-bg" cx="60" cy="60" r="45"></circle>
+            <circle class="score-ring-fill" id="score-ring-fill" cx="60" cy="60" r="45"></circle>
+          </svg>
+          <div class="score-num-wrap">
+            <div id="score-num">—</div>
+            <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-faint);letter-spacing:0.1em">/100</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimension scores -->
+      <div class="scorecard-section">
+        <div class="scorecard-section-title">Performance Breakdown</div>
+        <div class="dim-row">
+          <div class="dim-label">Technical Depth</div>
+          <div class="dim-bar-wrap"><div class="dim-bar" id="bar-technical"></div></div>
+          <div class="dim-score" id="score-technical">—</div>
+        </div>
+        <div class="dim-row">
+          <div class="dim-label">Communication</div>
+          <div class="dim-bar-wrap"><div class="dim-bar" id="bar-communication"></div></div>
+          <div class="dim-score" id="score-communication">—</div>
+        </div>
+        <div class="dim-row">
+          <div class="dim-label">Confidence</div>
+          <div class="dim-bar-wrap"><div class="dim-bar" id="bar-confidence"></div></div>
+          <div class="dim-score" id="score-confidence">—</div>
+        </div>
+        <div class="dim-row">
+          <div class="dim-label">Role Relevance</div>
+          <div class="dim-bar-wrap"><div class="dim-bar" id="bar-relevance"></div></div>
+          <div class="dim-score" id="score-relevance">—</div>
+        </div>
+        <div class="dim-row">
+          <div class="dim-label">Preparation</div>
+          <div class="dim-bar-wrap"><div class="dim-bar" id="bar-preparation"></div></div>
+          <div class="dim-score" id="score-preparation">—</div>
+        </div>
+      </div>
+
+      <!-- Strong & weak moments -->
+      <div class="scorecard-section">
+        <div class="scorecard-section-title">Key Moments</div>
+        <div id="moments-grid">
+          <!-- Rendered by results.js -->
+        </div>
+      </div>
+
+      <!-- Improvements -->
+      <div class="scorecard-section">
+        <div class="scorecard-section-title">What to work on</div>
+        <ul id="improvements-list">
+          <!-- Rendered by results.js -->
+        </ul>
+      </div>
+
+      <!-- CTA -->
+      <div style="text-align:center;padding:20px 0 40px;">
+        <button class="btn btn-primary btn-lg" onclick="window.location.href='/'">Practice again &rarr;</button>
+      </div>
+
+    </div><!-- /scorecard -->
+
+    <!-- Feedback section -->
+    <div id="feedback-section">
+      <div class="feedback-title">How was this interview?</div>
+      <p class="feedback-sub">Takes 30 seconds. Directly improves question quality.</p>
+      <div class="feedback-form" id="feedback-form-inner">
+        <div class="rating-group">
+          <div class="rating-label">Overall quality</div>
+          <div class="rating-pills" id="rating-overall">
+            <button class="rating-pill" data-val="1" onclick="selectRating('overall',1)">1 — Terrible</button>
+            <button class="rating-pill" data-val="2" onclick="selectRating('overall',2)">2 — Poor</button>
+            <button class="rating-pill" data-val="3" onclick="selectRating('overall',3)">3 — OK</button>
+            <button class="rating-pill" data-val="4" onclick="selectRating('overall',4)">4 — Good</button>
+            <button class="rating-pill" data-val="5" onclick="selectRating('overall',5)">5 — Great</button>
+          </div>
+        </div>
+        <div class="rating-group">
+          <div class="rating-label">Were questions relevant to your background?</div>
+          <div class="rating-pills" id="rating-relevance">
+            <button class="rating-pill" data-val="yes" onclick="selectRating('relevance','yes')">Yes, very</button>
+            <button class="rating-pill" data-val="somewhat" onclick="selectRating('relevance','somewhat')">Somewhat</button>
+            <button class="rating-pill" data-val="no" onclick="selectRating('relevance','no')">Not really</button>
+          </div>
+        </div>
+        <div class="rating-group">
+          <div class="rating-label">Did it ask good follow-up questions?</div>
+          <div class="rating-pills" id="rating-followup">
+            <button class="rating-pill" data-val="yes" onclick="selectRating('followup','yes')">Yes</button>
+            <button class="rating-pill" data-val="sometimes" onclick="selectRating('followup','sometimes')">Sometimes</button>
+            <button class="rating-pill" data-val="no" onclick="selectRating('followup','no')">No</button>
+          </div>
+        </div>
+        <div class="rating-group">
+          <div class="rating-label">Difficulty level</div>
+          <div class="rating-pills" id="rating-difficulty">
+            <button class="rating-pill" data-val="too_easy" onclick="selectRating('difficulty','too_easy')">Too easy</button>
+            <button class="rating-pill" data-val="right" onclick="selectRating('difficulty','right')">About right</button>
+            <button class="rating-pill" data-val="too_hard" onclick="selectRating('difficulty','too_hard')">Too hard</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Anything else? (optional)</label>
+          <textarea id="feedback-text" placeholder="What would make this better?"></textarea>
+        </div>
+        <button class="btn btn-outline" onclick="submitFeedback()">Submit feedback</button>
+      </div>
+    </div>
+
+  </div><!-- /results-content -->
+
+  <!-- Auth modal (reused from main) -->
+  <div class="modal-overlay" id="auth-modal" onclick="if(event.target===this)closeAuthModal()">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">See your results</div>
+          <div class="modal-subtitle">Free account — takes 20 seconds</div>
+        </div>
+        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">Log in</button>
+          <button class="auth-tab" data-tab="signup" onclick="switchAuthTab('signup')">Sign up</button>
+        </div>
+        <div id="form-login" class="auth-form">
+          <button class="btn-google" onclick="Auth.loginWithGoogle()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
+          </button>
+          <div class="auth-divider">or</div>
+          <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com"></div>
+          <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="Your password"></div>
+          <div class="auth-error" id="login-error"></div>
+          <button class="btn btn-primary btn-full" onclick="handleLogin()">Log in</button>
+        </div>
+        <div id="form-signup" class="auth-form hidden">
+          <button class="btn-google" onclick="Auth.loginWithGoogle()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Sign up with Google
+          </button>
+          <div class="auth-divider">or</div>
+          <div class="field"><label>Full name</label><input type="text" id="signup-name" placeholder="Your name"></div>
+          <div class="field"><label>Email</label><input type="email" id="signup-email" placeholder="you@example.com"></div>
+          <div class="field"><label>Password</label><input type="password" id="signup-password" placeholder="At least 6 characters"></div>
+          <div class="auth-error" id="signup-error"></div>
+          <button class="btn btn-primary btn-full" onclick="handleSignup()">Create account &amp; see results</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/prompts.js"></script>
+  <script src="js/results.js"></script>
+
+  <script>
+    // Feedback rating state
+    const _ratings = { overall: null, relevance: null, followup: null, difficulty: null };
+    function selectRating(group, val) {
+      _ratings[group] = val;
+      document.querySelectorAll(`#rating-${group} .rating-pill`).forEach(el => {
+        el.classList.toggle('selected', el.dataset.val == val);
+      });
+    }
+    function submitFeedback() {
+      Results.submitFeedback({
+        overall: _ratings.overall,
+        relevance: _ratings.relevance,
+        followup: _ratings.followup,
+        difficulty: _ratings.difficulty,
+        freeText: document.getElementById('feedback-text')?.value || ''
+      });
+    }
+
+    // Auth helpers (same as index.html)
+    function openAuthModal(tab) {
+      document.getElementById('auth-modal').classList.add('open');
+      switchAuthTab(tab || 'login');
+    }
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.remove('open');
+    }
+    function switchAuthTab(tab) {
+      document.querySelectorAll('.auth-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+      document.getElementById('form-login').classList.toggle('hidden', tab !== 'login');
+      document.getElementById('form-signup').classList.toggle('hidden', tab !== 'signup');
+    }
+    async function handleLogin() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const errEl = document.getElementById('login-error');
+      errEl.textContent = '';
+      try { await Auth.loginWithEmail(email, password); }
+      catch(e) { errEl.textContent = e.message || 'Login failed.'; }
+    }
+    async function handleSignup() {
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const errEl = document.getElementById('signup-error');
+      errEl.textContent = '';
+      if (!name || !email || !password) { errEl.textContent = 'All fields required.'; return; }
+      if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
+      try { await Auth.signupWithEmail(email, password, name); }
+      catch(e) { errEl.textContent = e.message || 'Signup failed.'; }
+    }
+    function showToast(msg, type) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = `show ${type || ''}`;
+      setTimeout(() => { el.className = ''; }, 3000);
+    }
+  </script>
+</body>
+</html>

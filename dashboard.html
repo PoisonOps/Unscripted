@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Unscripted</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-page">
+
+  <div id="toast"></div>
+
+  <nav>
+    <a href="/" class="nav-logo">Unscripted<span>.</span></a>
+    <div class="nav-right">
+      <a href="/" class="btn btn-primary btn-sm">Start Interview</a>
+      <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">Log out</button>
+    </div>
+  </nav>
+
+  <div id="dash-content">
+    <div id="dash-greeting">Loading...</div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total">—</div>
+        <div class="stat-label">Total sessions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-avg">—</div>
+        <div class="stat-label">Avg score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-best">—</div>
+        <div class="stat-label">Best score</div>
+      </div>
+    </div>
+
+    <!-- Session history -->
+    <div class="sessions-title">Session History</div>
+    <div id="sessions-list">
+      <div style="display:flex;justify-content:center;padding:40px">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+
+  <script>
+    function showToast(msg, type) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = `show ${type || ''}`;
+      setTimeout(() => { el.className = ''; }, 3000);
+    }
+    document.addEventListener('DOMContentLoaded', () => Dashboard.init());
+  </script>
+</body>
+</html>

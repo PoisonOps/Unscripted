@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Room — Unscripted</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="interview-page">
+
+  <div id="toast"></div>
+
+  <div id="interview-room">
+
+    <!-- Nav bar -->
+    <div id="interview-nav">
+      <div class="iv-nav-left">
+        <div class="iv-avatar" id="iv-avatar">AI</div>
+        <div>
+          <div class="iv-name" id="iv-name">Loading...</div>
+          <div class="iv-company" id="iv-company"></div>
+        </div>
+      </div>
+      <div class="iv-nav-center">
+        <div class="iv-badge" id="iv-round-badge">INTERVIEW</div>
+        <div class="iv-badge" id="iv-mode-badge">FULL MOCK</div>
+      </div>
+      <div class="iv-nav-right">
+        <span id="iv-q-counter">Q 0 / 12</span>
+        <span id="iv-timer">00:00</span>
+        <button class="btn btn-outline btn-sm" onclick="Interview.endInterview()">End Interview</button>
+      </div>
+    </div>
+
+    <!-- Main area -->
+    <div id="interview-main">
+
+      <!-- Center: state display -->
+      <div id="interview-center">
+        <div class="spotlight-bg"></div>
+
+        <div id="state-display">
+          <div class="state-label" id="state-label"></div>
+
+          <div class="interview-waveform idle" id="iv-waveform">
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+            <div class="waveform-bar"></div><div class="waveform-bar"></div>
+          </div>
+
+          <div id="mic-indicator" class="hidden">
+            <div class="mic-dot"></div>
+            <span style="font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--success)">Mic active</span>
+          </div>
+
+          <div id="current-question"></div>
+        </div>
+      </div>
+
+      <!-- Right: transcript panel -->
+      <div id="transcript-panel">
+        <div class="transcript-header">
+          <span>Transcript</span>
+          <button class="btn btn-ghost btn-sm" onclick="this.closest('#transcript-panel').classList.toggle('collapsed')" style="font-size:0.7rem;color:var(--text-faint)">hide</button>
+        </div>
+        <div id="transcript-list">
+          <div style="text-align:center;padding:40px 20px;font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.08em;color:var(--text-faint)">
+            Conversation will appear here
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer bar -->
+    <div id="interview-footer">
+      <div id="user-input-text"></div>
+      <button class="btn btn-ghost btn-sm" onclick="Interview.skipQuestion()">Skip question</button>
+      <button class="btn btn-outline btn-sm" onclick="Interview.endInterview()">End interview</button>
+    </div>
+
+  </div>
+
+  <!-- Speech not supported message -->
+  <div id="no-speech-banner" class="hidden" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#FCA5A5;padding:12px 20px;border-radius:var(--radius-pill);font-size:0.85rem;font-family:var(--font-mono);z-index:999;text-align:center;">
+    Voice recognition not available in this browser. Try Chrome or Edge.
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/prompts.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/interview.js"></script>
+</body>
+</html>
