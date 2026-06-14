@@ -16,7 +16,7 @@ const FLAGS = {
 
 // ─── App Constants ───────────────────────────────────────────────────────────
 const APP_NAME    = 'Unscripted';
-const APP_URL     = IS_DEV ? 'http://localhost:3000' : 'https://unscripted.vercel.app';
+const APP_URL     = IS_DEV ? 'http://localhost:3000' : 'https://unscripted-interview.vercel.app';
 const WA_NUMBER   = '917080442040';
 
 function log(...args) {
