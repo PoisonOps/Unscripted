@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0F0D0B"/>
+  <!-- Subtle grid lines -->
+  <line x1="0" y1="210" x2="1200" y2="210" stroke="#1A1714" stroke-width="1"/>
+  <line x1="0" y1="420" x2="1200" y2="420" stroke="#1A1714" stroke-width="1"/>
+  <line x1="400" y1="0" x2="400" y2="630" stroke="#1A1714" stroke-width="1"/>
+  <line x1="800" y1="0" x2="800" y2="630" stroke="#1A1714" stroke-width="1"/>
+  <!-- Red glow -->
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#FF3B5C" stop-opacity="0.12"/>
+    <stop offset="100%" stop-color="#FF3B5C" stop-opacity="0"/>
+  </radialGradient>
+  <ellipse cx="600" cy="315" rx="500" ry="280" fill="url(#glow)"/>
+
+  <!-- Left accent bar -->
+  <rect x="80" y="180" width="4" height="270" rx="2" fill="#FF3B5C"/>
+
+  <!-- Eyebrow -->
+  <text x="108" y="214" font-family="'JetBrains Mono', monospace" font-size="18" fill="#FF3B5C" letter-spacing="4" font-weight="500">AI MOCK INTERVIEW</text>
+
+  <!-- Main headline -->
+  <text x="104" y="310" font-family="'Syne', 'Arial Black', sans-serif" font-size="88" fill="#F0EDE6" font-weight="800" letter-spacing="-3">Practice the</text>
+  <text x="104" y="408" font-family="'Syne', 'Arial Black', sans-serif" font-size="88" fill="#FF3B5C" font-weight="800" letter-spacing="-3">interview.</text>
+
+  <!-- Subtext -->
+  <text x="108" y="468" font-family="'Inter', Arial, sans-serif" font-size="24" fill="rgba(240,237,230,0.45)" letter-spacing="0">Not the script.</text>
+
+  <!-- Right side: mock interview card -->
+  <rect x="820" y="140" width="300" height="350" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <!-- Card gradient border top -->
+  <rect x="820" y="140" width="300" height="2" rx="1" fill="#FF3B5C" opacity="0.5"/>
+
+  <!-- Avatar -->
+  <circle cx="856" cy="190" r="20" fill="rgba(255,59,92,0.15)" stroke="rgba(255,59,92,0.3)" stroke-width="1.5"/>
+  <text x="856" y="196" font-family="'Syne', sans-serif" font-size="13" fill="#FF3B5C" font-weight="700" text-anchor="middle">VN</text>
+  <text x="886" y="185" font-family="'Inter', sans-serif" font-size="13" fill="#F0EDE6" font-weight="600">Vikram Nair</text>
+  <text x="886" y="202" font-family="'JetBrains Mono', monospace" font-size="10" fill="rgba(240,237,230,0.35)" letter-spacing="1">L&amp;T · SENIOR MGR</text>
+
+  <!-- Waveform bars -->
+  <rect x="836" y="228" width="6" height="12" rx="3" fill="#FF3B5C" opacity="0.4"/>
+  <rect x="848" y="220" width="6" height="28" rx="3" fill="#FF3B5C" opacity="0.7"/>
+  <rect x="860" y="215" width="6" height="38" rx="3" fill="#FF3B5C"/>
+  <rect x="872" y="222" width="6" height="24" rx="3" fill="#FF3B5C" opacity="0.8"/>
+  <rect x="884" y="218" width="6" height="32" rx="3" fill="#FF3B5C" opacity="0.9"/>
+  <rect x="896" y="225" width="6" height="18" rx="3" fill="#FF3B5C" opacity="0.6"/>
+  <rect x="908" y="220" width="6" height="28" rx="3" fill="#FF3B5C" opacity="0.75"/>
+  <rect x="920" y="213" width="6" height="42" rx="3" fill="#FF3B5C"/>
+  <rect x="932" y="222" width="6" height="24" rx="3" fill="#FF3B5C" opacity="0.65"/>
+  <rect x="944" y="228" width="6" height="12" rx="3" fill="#FF3B5C" opacity="0.4"/>
+  <rect x="956" y="219" width="6" height="30" rx="3" fill="#FF3B5C" opacity="0.8"/>
+  <rect x="968" y="215" width="6" height="38" rx="3" fill="#FF3B5C" opacity="0.9"/>
+  <rect x="980" y="224" width="6" height="20" rx="3" fill="#FF3B5C" opacity="0.55"/>
+  <rect x="992" y="220" width="6" height="28" rx="3" fill="#FF3B5C" opacity="0.7"/>
+  <rect x="1004" y="228" width="6" height="12" rx="3" fill="#FF3B5C" opacity="0.4"/>
+  <rect x="1016" y="217" width="6" height="34" rx="3" fill="#FF3B5C" opacity="0.85"/>
+  <rect x="1028" y="221" width="6" height="26" rx="3" fill="#FF3B5C" opacity="0.7"/>
+  <rect x="1040" y="225" width="6" height="18" rx="3" fill="#FF3B5C" opacity="0.5"/>
+  <rect x="1052" y="215" width="6" height="38" rx="3" fill="#FF3B5C" opacity="0.9"/>
+  <rect x="1064" y="228" width="6" height="10" rx="3" fill="#FF3B5C" opacity="0.35"/>
+  <rect x="1076" y="220" width="6" height="28" rx="3" fill="#FF3B5C" opacity="0.65"/>
+  <rect x="1088" y="218" width="6" height="32" rx="3" fill="#FF3B5C" opacity="0.75"/>
+  <rect x="1100" y="224" width="6" height="20" rx="3" fill="#FF3B5C" opacity="0.5"/>
+
+  <!-- Question text in card -->
+  <text x="836" y="288" font-family="'Inter', sans-serif" font-size="12" fill="rgba(240,237,230,0.5)" font-style="italic">"Walk me through your final year</text>
+  <text x="836" y="305" font-family="'Inter', sans-serif" font-size="12" fill="rgba(240,237,230,0.5)" font-style="italic">project — your specific contribution."</text>
+
+  <!-- Divider -->
+  <line x1="836" y1="325" x2="1100" y2="325" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <!-- Stats row in card -->
+  <text x="836" y="355" font-family="'JetBrains Mono', monospace" font-size="10" fill="rgba(240,237,230,0.25)" letter-spacing="1">ROUND 1 · TECHNICAL · Q 3/12</text>
+
+  <!-- Features row bottom -->
+  <rect x="836" y="375" width="80" height="28" rx="6" fill="rgba(255,59,92,0.1)" stroke="rgba(255,59,92,0.2)" stroke-width="1"/>
+  <text x="876" y="393" font-family="'JetBrains Mono', monospace" font-size="9" fill="#FF3B5C" letter-spacing="1" text-anchor="middle">VOICE</text>
+
+  <rect x="926" y="375" width="90" height="28" rx="6" fill="rgba(255,59,92,0.1)" stroke="rgba(255,59,92,0.2)" stroke-width="1"/>
+  <text x="971" y="393" font-family="'JetBrains Mono', monospace" font-size="9" fill="#FF3B5C" letter-spacing="1" text-anchor="middle">CV-AWARE</text>
+
+  <rect x="1026" y="375" width="90" height="28" rx="6" fill="rgba(255,59,92,0.1)" stroke="rgba(255,59,92,0.2)" stroke-width="1"/>
+  <text x="1071" y="393" font-family="'JetBrains Mono', monospace" font-size="9" fill="#FF3B5C" letter-spacing="1" text-anchor="middle">PUSHBACK</text>
+
+  <!-- Live dot + URL bottom left -->
+  <circle cx="88" cy="560" r="5" fill="#10B981"/>
+  <text x="104" y="565" font-family="'JetBrains Mono', monospace" font-size="16" fill="rgba(240,237,230,0.3)" letter-spacing="1">unscripted-interview.vercel.app</text>
+
+  <!-- Logo bottom right -->
+  <text x="1120" y="565" font-family="'Syne', 'Arial Black', sans-serif" font-size="22" fill="rgba(240,237,230,0.15)" font-weight="800" text-anchor="end" letter-spacing="-1">Unscripted.</text>
+</svg>
