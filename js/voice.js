@@ -20,9 +20,9 @@ const Voice = {
     }
     this.supported = true;
     this._initRec(SpeechRec);
-    this.synthesis.getVoices();
+    this._loadVoicesAndCache();
     if (this.synthesis.onvoiceschanged !== undefined) {
-      this.synthesis.onvoiceschanged = () => this.synthesis.getVoices();
+      this.synthesis.onvoiceschanged = () => this._loadVoicesAndCache();
     }
   },
 
@@ -82,20 +82,34 @@ const Voice = {
   _MALE:   ['daniel', 'alex', 'james', 'tom', 'rishi', 'oliver', 'mark',
              'google uk english male', 'david', 'microsoft david'],
 
-  _pickVoice(gender) {
+  // Cache male + female voice once voices load — prevents switching mid-session
+  _voiceCache: {},
+
+  _loadVoicesAndCache() {
     const voices = this.synthesis.getVoices().filter(v => v.lang.startsWith('en'));
-    if (!voices.length) return null;
+    if (!voices.length) return;
+    this._voiceCache.male   = this._selectVoice(voices, 'male');
+    this._voiceCache.female = this._selectVoice(voices, 'female');
+  },
+
+  _selectVoice(voices, gender) {
     const pref = gender === 'female' ? this._FEMALE : this._MALE;
     const fall = gender === 'female' ? this._MALE   : this._FEMALE;
-    for (const n of pref) {
-      const v = voices.find(v => v.name.toLowerCase().includes(n));
-      if (v) return v;
-    }
-    for (const n of fall) {
-      const v = voices.find(v => v.name.toLowerCase().includes(n));
-      if (v) return v;
-    }
+    for (const n of pref) { const v = voices.find(v => v.name.toLowerCase().includes(n)); if (v) return v; }
+    for (const n of fall) { const v = voices.find(v => v.name.toLowerCase().includes(n)); if (v) return v; }
     return voices[0];
+  },
+
+  _pickVoice(gender) {
+    // Always return cached voice — ensures same voice throughout the session
+    const cached = this._voiceCache[gender];
+    if (cached) return cached;
+    // Voices not yet cached — select on the fly and cache now
+    const voices = this.synthesis.getVoices().filter(v => v.lang.startsWith('en'));
+    if (!voices.length) return null;
+    const v = this._selectVoice(voices, gender);
+    this._voiceCache[gender] = v;
+    return v;
   },
 
   startListening() {
@@ -119,6 +133,8 @@ const Voice = {
   speak(text, onEnd, gender) {
     gender = gender || 'male';
     if (!text) { if (onEnd) onEnd(); return; }
+    // Mute mic while AI speaks — prevents recognition picking up TTS audio
+    this.stopListening();
     this.synthesis.cancel();
     this.isSpeaking = true;
     if (text.length > 200) { this._speakChunked(text, onEnd, gender); return; }

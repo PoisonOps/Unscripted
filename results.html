@@ -48,18 +48,19 @@
     <div id="scorecard" class="hidden">
 
       <!-- Overall score ring -->
-      <div class="score-ring-wrap">
-        <div class="score-ring-title">Overall Score</div>
+      <div class="score-hero">
         <div class="score-ring-svg">
-          <svg width="120" height="120" viewBox="0 0 120 120">
-            <circle class="score-ring-bg" cx="60" cy="60" r="45"></circle>
-            <circle class="score-ring-fill" id="score-ring-fill" cx="60" cy="60" r="45"></circle>
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle class="score-ring-bg" cx="80" cy="80" r="60"></circle>
+            <circle class="score-ring-fill" id="score-ring-fill" cx="80" cy="80" r="60"></circle>
           </svg>
           <div class="score-num-wrap">
             <div id="score-num">—</div>
-            <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-faint);letter-spacing:0.1em">/100</div>
+            <div class="score-denom">/100</div>
           </div>
         </div>
+        <div class="score-grade" id="score-grade">Analysing...</div>
+        <div class="score-ring-title">Overall Score</div>
       </div>
 
       <!-- Dimension scores -->

@@ -178,21 +178,30 @@ const Results = {
     const scoreNumEl = document.getElementById('score-num');
     if (scoreNumEl) scoreNumEl.textContent = overall;
 
+    // Score grade label
+    const grades = [
+      [80, 'Excellent', 'var(--success)'],
+      [65, 'Good',      'var(--success)'],
+      [50, 'Average',   'var(--accent)'],
+      [35, 'Needs Work','var(--danger)'],
+      [ 0, 'Needs Practice', 'var(--danger)'],
+    ];
+    const [, gradeLabel, gradeColor] = grades.find(([min]) => overall >= min);
+    const gradeEl = document.getElementById('score-grade');
+    if (gradeEl) { gradeEl.textContent = gradeLabel; gradeEl.style.color = gradeColor; }
+
     const ringFill = document.getElementById('score-ring-fill');
     if (ringFill) {
-      const circumference = 283; // 2 * PI * 45
+      const circumference = 377; // 2 * PI * 60 (r=60)
       const offset = circumference - (overall / 100) * circumference;
-      setTimeout(() => {
-        ringFill.style.strokeDashoffset = offset;
-      }, 300);
-    }
-
-    // Color the ring based on score
-    if (ringFill) {
-      if (overall >= 70) ringFill.style.stroke = 'var(--success)';
+      if (overall >= 65)      ringFill.style.stroke = 'var(--success)';
       else if (overall >= 50) ringFill.style.stroke = 'var(--accent)';
-      else ringFill.style.stroke = 'var(--danger)';
+      else                    ringFill.style.stroke = 'var(--danger)';
+      ringFill.setAttribute('stroke-dasharray', circumference);
+      ringFill.setAttribute('stroke-dashoffset', circumference);
+      setTimeout(() => { ringFill.style.strokeDashoffset = offset; }, 300);
     }
+    if (scoreNumEl) scoreNumEl.style.color = gradeColor;
 
     // Dimension bars
     const dims = ['technical', 'communication', 'confidence', 'relevance', 'preparation'];
