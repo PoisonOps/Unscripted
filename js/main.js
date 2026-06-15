@@ -100,19 +100,27 @@ const Setup = {
 
     const fields = {
       campus: `${cvUpload}
-        <div class="field"><label>CGPA / Percentage</label><input type="text" id="ctx-cgpa" placeholder="e.g. 8.2 or 78%"></div>
-        <div class="field"><label>Branch / Stream</label>
-          <select id="ctx-branch">
-            <option value="">Select branch</option>
-            <option>Civil Engineering</option><option>Mechanical Engineering</option>
-            <option>Electrical Engineering</option><option>Computer Science</option>
-            <option>Electronics & Communication</option><option>Chemical Engineering</option>
-            <option>Information Technology</option><option>Other</option>
+        <div class="field"><label>Degree / Course</label>
+          <select id="ctx-degree">
+            <option value="">Select degree</option>
+            <option>BTech / BE</option>
+            <option>BCom</option>
+            <option>BBA</option>
+            <option>BA / BSc</option>
+            <option>BCA</option>
+            <option>MBA (Campus)</option>
+            <option>MCA</option>
+            <option>Diploma</option>
+            <option>Other</option>
           </select>
         </div>
+        <div class="field"><label>Branch / Stream / Specialisation</label>
+          <input type="text" id="ctx-branch" placeholder="e.g. Computer Science · Finance · Marketing · History · Electronics…">
+        </div>
+        <div class="field"><label>CGPA / Percentage</label><input type="text" id="ctx-cgpa" placeholder="e.g. 8.2 CGPA or 78%"></div>
         <div class="option-group"><div class="option-group-label">Target Company Type</div>
           <div class="option-pills">
-            ${['Core Engineering','IT/Software','Consulting','Finance/BFSI','FMCG/Consumer','Government PSU']
+            ${['IT/Software','Core Engineering','Consulting','Finance/BFSI','FMCG/Consumer','Media/Content','Government PSU','Startup']
               .map(t => `<button class="option-pill" data-group="companyType" data-value="${t}" onclick="Setup.selectOption('companyType','${t}')">${t}</button>`).join('')}
           </div>
         </div>`,
@@ -174,6 +182,7 @@ const Setup = {
   _readContextData() {
     const get = id => document.getElementById(id)?.value?.trim() || null;
     this.data.contextData = {
+      degree:            get('ctx-degree'),
       cgpa:              get('ctx-cgpa'),
       branch:            get('ctx-branch'),
       companyType:       this.data.companyType || null,
@@ -224,26 +233,36 @@ const Setup = {
 };
 
 // ─── Nav auth state ────────────────────────────────────────────────────────────
+function _setNavAuth(loggedIn) {
+  const loginBtn  = document.getElementById('nav-login-btn');
+  const dashBtn   = document.getElementById('nav-dash-btn');
+  const logoutBtn = document.getElementById('nav-logout-btn');
+  if (loggedIn) {
+    loginBtn?.classList.add('hidden');
+    dashBtn?.classList.remove('hidden');
+    logoutBtn?.classList.remove('hidden');
+  } else {
+    loginBtn?.classList.remove('hidden');
+    dashBtn?.classList.add('hidden');
+    logoutBtn?.classList.add('hidden');
+  }
+}
+
+function confirmLogout() {
+  const modal = document.getElementById('logout-modal');
+  if (modal) { modal.style.display = 'flex'; }
+}
+
 async function initNav() {
   try {
     const { data: { session } } = await getClient().auth.getSession();
-    const user = session?.user || null;
-    const loginBtn = document.getElementById('nav-login-btn');
-    const dashBtn  = document.getElementById('nav-dash-btn');
-    if (user) {
-      if (loginBtn) loginBtn.classList.add('hidden');
-      if (dashBtn)  dashBtn.classList.remove('hidden');
-    } else {
-      if (loginBtn) loginBtn.classList.remove('hidden');
-      if (dashBtn)  dashBtn.classList.add('hidden');
-    }
+    _setNavAuth(!!session?.user);
+
     Auth.onAuthChange(async (event, u) => {
       if (event === 'SIGNED_IN' && u) {
         await Auth.handlePostSignup(u);
-        if (loginBtn) loginBtn.classList.add('hidden');
-        if (dashBtn)  dashBtn.classList.remove('hidden');
+        _setNavAuth(true);
         closeAuthModal();
-        // Return to page user was on before Google OAuth redirect
         const returnUrl = sessionStorage.getItem('us_post_auth_url');
         if (returnUrl && returnUrl !== window.location.href) {
           sessionStorage.removeItem('us_post_auth_url');
@@ -251,8 +270,7 @@ async function initNav() {
         }
       }
       if (event === 'SIGNED_OUT') {
-        if (loginBtn) loginBtn.classList.remove('hidden');
-        if (dashBtn)  dashBtn.classList.add('hidden');
+        _setNavAuth(false);
       }
     });
   } catch (e) {

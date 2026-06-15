@@ -180,23 +180,24 @@ const PERSONAS = {
 const CATEGORY_GUIDANCE = {
   campus: {
     technical: `Core focus areas:
-- Engineering fundamentals specific to their branch (ask about their actual coursework)
-- Final year project: dig into technical decisions, challenges, what they'd do differently
-- Internship experience: specific tasks, technologies, outcomes
-- 1-2 practical application questions ("How would you approach X on a real project?")
-- Aptitude for problem-solving: give a scenario, not just theory questions
-- NEVER ask generic "what is the definition of X" questions — always apply knowledge`,
+- Subject-matter fundamentals specific to their degree and branch/stream (ask about their actual coursework, not generic engineering)
+- If they're from a non-engineering background (BCom, BBA, BA etc.) — ask about relevant domain knowledge (accounting, economics, marketing theory, etc.)
+- Final year project or dissertation: dig into decisions, challenges, what they'd do differently
+- Internship experience: specific tasks, skills used, outcomes achieved
+- 1-2 practical application questions ("How would you handle X in a real work scenario?")
+- Aptitude for problem-solving: give a scenario relevant to their domain
+- NEVER ask generic "define X" questions — always apply knowledge to real situations`,
     technical_screening: `Core focus areas:
-- Engineering fundamentals specific to their branch (ask about their actual coursework)
-- Final year project: dig into technical decisions, challenges, what they'd do differently
-- Internship experience: specific tasks, technologies, outcomes
-- 1-2 practical application questions ("How would you approach X on a real project?")
-- Aptitude for problem-solving: give a scenario, not just theory questions
-- NEVER ask generic "what is the definition of X" questions — always apply knowledge`,
+- Subject-matter fundamentals specific to their degree and branch/stream (not just engineering — adapt to BCom, BBA, BA, etc.)
+- Final year project or dissertation: dig into decisions, challenges, what they'd do differently
+- Internship experience: specific tasks, skills used, outcomes achieved
+- 1-2 practical application questions relevant to their field
+- Aptitude for problem-solving: give a scenario relevant to their domain
+- NEVER ask generic "define X" questions — always apply knowledge to real situations`,
     technical_deep: `Core focus areas:
-- Deep technical dive into specific domains relevant to their branch
-- Code/design/calculation walkthroughs
-- Edge cases and failure modes
+- Deep dive into subject-matter specific to their degree and branch (engineering, commerce, arts, management — adapt accordingly)
+- Walkthrough of a project, calculation, case study, or design relevant to their field
+- Edge cases, failure modes, and what-if scenarios
 - Trade-offs and decision rationale`,
     hr: `Core focus areas:
 - Why this company specifically (test if they've researched)
@@ -362,8 +363,9 @@ function buildSystemPrompt(setup) {
   }
   if (contextData) {
     const fields = [
+      ['degree', 'Degree/Course'],
       ['cgpa', 'CGPA/Percentage'],
-      ['branch', 'Branch/Stream'],
+      ['branch', 'Branch/Stream/Specialisation'],
       ['companyType', 'Target Company Type'],
       ['currentRole', 'Current Role'],
       ['yearsExp', 'Years of Experience'],
