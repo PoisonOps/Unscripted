@@ -1,14 +1,11 @@
 // ─── Supabase Client ─────────────────────────────────────────────────────────
-let sbClient = null;
+// Eager init — must happen immediately so OAuth session in URL fragment is
+// detected before any onAuthStateChange listeners are registered.
+const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
 
-function getClient() {
-  if (!sbClient) {
-    sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true }
-    });
-  }
-  return sbClient;
-}
+function getClient() { return sbClient; }
 
 // ─── Session Storage ─────────────────────────────────────────────────────────
 const DB = {

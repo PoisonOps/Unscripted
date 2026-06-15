@@ -226,7 +226,8 @@ const Setup = {
 // ─── Nav auth state ────────────────────────────────────────────────────────────
 async function initNav() {
   try {
-    const user = await Auth.getUser();
+    const { data: { session } } = await getClient().auth.getSession();
+    const user = session?.user || null;
     const loginBtn = document.getElementById('nav-login-btn');
     const dashBtn  = document.getElementById('nav-dash-btn');
     if (user) {
