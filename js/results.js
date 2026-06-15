@@ -4,7 +4,28 @@ const Results = {
   session: null,
 
   async init() {
-    this.sessionId = new URLSearchParams(window.location.search).get('session');
+    // Handle OAuth error redirect (e.g. Google OAuth failed)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error')) {
+      const errCode = urlParams.get('error_code') || '';
+      const errDesc = urlParams.get('error_description') || '';
+      // Clean the URL then show gate with a helpful message
+      window.history.replaceState({}, '', '/results');
+      document.getElementById('results-gate').classList.remove('hidden');
+      document.getElementById('results-content').classList.add('hidden');
+      const gateEl = document.getElementById('results-gate');
+      const notice = gateEl.querySelector('.oauth-error-notice') || document.createElement('p');
+      notice.className = 'oauth-error-notice';
+      notice.style.cssText = 'color:var(--danger);font-size:0.82rem;font-family:var(--font-mono);margin-bottom:12px;text-align:center;';
+      notice.textContent = errCode === 'unexpected_failure'
+        ? 'Google sign-in failed — try email signup instead, or check your Google account settings.'
+        : `Sign-in error: ${errDesc || errCode}. Please try again.`;
+      gateEl.prepend(notice);
+      openAuthModal('signup');
+      return;
+    }
+
+    this.sessionId = urlParams.get('session');
     const user = await Auth.getUser();
 
     if (!user) {

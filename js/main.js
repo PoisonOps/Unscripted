@@ -308,7 +308,16 @@ async function handleSignup() {
   try {
     await Auth.signupWithEmail(email, password, name);
   } catch (e) {
-    if (errEl) errEl.textContent = e.message || 'Signup failed. Try again.';
+    const msg = (e.message || '');
+    if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('security purposes') || msg.toLowerCase().includes('rate') || msg.toLowerCase().includes('registered')) {
+      const loginEmail = document.getElementById('login-email');
+      const loginErr   = document.getElementById('login-error');
+      if (loginEmail) loginEmail.value = email;
+      if (loginErr)   loginErr.textContent = 'This email already has an account. Enter your password below.';
+      switchAuthTab('login');
+    } else {
+      if (errEl) errEl.textContent = msg || 'Signup failed. Try again.';
+    }
   }
 }
 

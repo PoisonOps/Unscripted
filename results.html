@@ -270,7 +270,17 @@
       if (!name || !email || !password) { errEl.textContent = 'All fields required.'; return; }
       if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; return; }
       try { await Auth.signupWithEmail(email, password, name); }
-      catch(e) { errEl.textContent = e.message || 'Signup failed.'; }
+      catch(e) {
+        const msg = e.message || '';
+        // Email already exists or rate limited — switch to login
+        if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('security purposes') || msg.toLowerCase().includes('rate') || msg.toLowerCase().includes('registered')) {
+          document.getElementById('login-email').value = email;
+          document.getElementById('login-error').textContent = 'This email already has an account. Enter your password below.';
+          switchAuthTab('login');
+        } else {
+          errEl.textContent = msg || 'Signup failed. Try again.';
+        }
+      }
     }
     function showToast(msg, type) {
       const el = document.getElementById('toast');
