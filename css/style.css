@@ -275,7 +275,8 @@ nav {
 #nav.scrolled { background: rgba(245, 243, 238, 0.95); backdrop-filter: blur(16px); border-bottom-color: var(--line); }
 #nav .nav-logo { color: var(--hero-text); }
 #nav.scrolled .nav-logo { color: var(--text); }
-#nav.scrolled .btn-ghost { color: var(--text-dim); }
+#nav:not(.scrolled) .btn-ghost { color: rgba(240, 237, 230, 0.6) !important; }
+#nav.scrolled .btn-ghost { color: var(--text-dim) !important; }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; }
 .nav-links { display: flex; align-items: center; gap: 10px; }
 /* Results page nav */
@@ -399,7 +400,7 @@ nav {
   position: relative;
 }
 .how-step:last-child { border-right: none; }
-.step-number { font-family: var(--font-mono); font-size: 5rem; font-weight: 500; color: var(--line); line-height: 1; margin-bottom: 24px; display: block; }
+.step-number { font-family: var(--font-mono); font-size: 5rem; font-weight: 500; color: rgba(26, 23, 20, 0.15); line-height: 1; margin-bottom: 24px; display: block; }
 .step-icon-wrap { width: 44px; height: 44px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 16px; }
 .how-step h3  { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
 .how-step p   { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
@@ -462,7 +463,7 @@ nav {
 .type-name    { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
 .type-desc    { font-size: 0.83rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 14px; }
 .type-tags    { display: flex; flex-wrap: wrap; gap: 6px; }
-.type-tag     { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: var(--radius-pill); border: 1px solid var(--line); color: var(--text-faint); }
+.type-tag     { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; padding: 3px 9px; border-radius: var(--radius-pill); border: 1px solid #C8C3BC; color: var(--text-dim); }
 
 /* Legacy type-card selectors for other pages */
 .type-card.campus     { --category-color: var(--campus); }
