@@ -26,6 +26,8 @@ const Auth = {
 
   async loginWithGoogle() {
     const client = getClient();
+    // Save current page so we can return after OAuth redirect
+    sessionStorage.setItem('us_post_auth_url', window.location.href);
     const { error } = await client.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: APP_URL }

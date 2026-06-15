@@ -242,6 +242,12 @@ async function initNav() {
         if (loginBtn) loginBtn.classList.add('hidden');
         if (dashBtn)  dashBtn.classList.remove('hidden');
         closeAuthModal();
+        // Return to page user was on before Google OAuth redirect
+        const returnUrl = sessionStorage.getItem('us_post_auth_url');
+        if (returnUrl && returnUrl !== window.location.href) {
+          sessionStorage.removeItem('us_post_auth_url');
+          window.location.href = returnUrl;
+        }
       }
       if (event === 'SIGNED_OUT') {
         if (loginBtn) loginBtn.classList.remove('hidden');
