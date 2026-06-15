@@ -1,3 +1,37 @@
+// ─── Round types per category ─────────────────────────────────────────────────
+const ROUND_TYPES_BY_CAT = {
+  campus:      [
+    { value: 'technical_screening', label: 'Technical Screening' },
+    { value: 'technical_deep',      label: 'Technical Deep Dive' },
+    { value: 'hr',                  label: 'HR Round' },
+    { value: 'final_round',         label: 'Final Round' },
+  ],
+  job:         [
+    { value: 'technical_screening', label: 'Technical / Domain Screening' },
+    { value: 'technical_deep',      label: 'Technical / Domain Deep Dive' },
+    { value: 'hr',                  label: 'HR Round' },
+    { value: 'final_round',         label: 'Final Round' },
+  ],
+  mba:         [
+    { value: 'gd_pi',       label: 'Personal Interview (PI)' },
+    { value: 'hr',          label: 'GD / WAT Prep' },
+    { value: 'final_round', label: 'Final PI Round' },
+  ],
+  ms:          [
+    { value: 'interview',           label: 'Admission Interview' },
+    { value: 'technical_screening', label: 'Research / Faculty Interview' },
+    { value: 'hr',                  label: 'Funding / Advisor Chat' },
+  ],
+  upsc:        [
+    { value: 'personality', label: 'Personality Test (Interview)' },
+  ],
+  scholarship: [
+    { value: 'interview',           label: 'Panel Interview' },
+    { value: 'technical_screening', label: 'One-on-One Interview' },
+    { value: 'hr',                  label: 'Video / Online Interview' },
+  ],
+};
+
 // ─── Category color theming ────────────────────────────────────────────────────
 const CAT_COLORS = {
   campus:      '#2563EB',
@@ -58,6 +92,7 @@ const Setup = {
     const nextStep = this.currentStep + 1;
     if (nextStep <= this.totalSteps) {
       if (nextStep === 2) this._renderContextFields();
+      if (nextStep === 3) this._renderStep3();
       this.goTo(nextStep);
       if (nextStep === 4) {
         this._readContextData();
@@ -126,32 +161,98 @@ const Setup = {
         </div>`,
 
       job: `${cvUpload}
-        <div class="field"><label>Current Role & Company</label><input type="text" id="ctx-currentRole" placeholder="e.g. Software Engineer at Infosys"></div>
+        <div class="field"><label>Industry / Domain</label>
+          <select id="ctx-industry">
+            <option value="">Select domain</option>
+            <option>IT / Software</option>
+            <option>Finance / Banking / BFSI</option>
+            <option>Marketing / Growth</option>
+            <option>Sales / Business Development</option>
+            <option>Operations / Supply Chain</option>
+            <option>Human Resources</option>
+            <option>Consulting</option>
+            <option>Healthcare / Pharma</option>
+            <option>Product Management</option>
+            <option>Design / UX</option>
+            <option>Law / Legal</option>
+            <option>Education / EdTech</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Current Role & Company</label><input type="text" id="ctx-currentRole" placeholder="e.g. Financial Analyst at HDFC · Marketing Manager at Unilever"></div>
         <div class="field"><label>Years of Experience</label><input type="number" id="ctx-yearsExp" placeholder="e.g. 3" min="0" max="40"></div>
-        <div class="field"><label>Target Role</label><input type="text" id="ctx-targetRole" placeholder="e.g. Product Manager at a startup"></div>
+        <div class="field"><label>Target Role</label><input type="text" id="ctx-targetRole" placeholder="e.g. Senior Product Manager · Investment Banking Associate"></div>
         <div class="field"><label>Why switching? (optional)</label><textarea id="ctx-whySwitching" placeholder="Be honest — the AI will probe this..."></textarea></div>`,
 
       mba: `
-        <div class="field"><label>CAT / GMAT Score & Percentile</label><input type="text" id="ctx-catScore" placeholder="e.g. 98.5%ile or GMAT 720"></div>
+        <div class="field"><label>CAT / GMAT / GRE Score & Percentile</label><input type="text" id="ctx-catScore" placeholder="e.g. CAT 98.5%ile · GMAT 720 · GRE 325"></div>
         <div class="field"><label>Work Experience (years)</label><input type="number" id="ctx-workEx" placeholder="e.g. 2" min="0" max="20"></div>
-        <div class="field"><label>Graduation Percentage / CGPA</label><input type="text" id="ctx-gradPercent" placeholder="e.g. 75% or 7.8 CGPA"></div>
+        <div class="field"><label>Industry & Role (current/last)</label><input type="text" id="ctx-mbaCurrentRole" placeholder="e.g. Software Engineer at TCS · CA at Deloitte · Army Officer"></div>
+        <div class="field"><label>Graduation Degree, Stream & Percentage</label><input type="text" id="ctx-gradPercent" placeholder="e.g. BTech CSE 78% · BCom Finance 8.2 CGPA"></div>
         <div class="field"><label>Why MBA? (write freely)</label><textarea id="ctx-whyMba" placeholder="The AI will probe this hard — write your real answer, not the polished one"></textarea></div>`,
 
       ms: `
-        <div class="field"><label>Statement of Purpose (paste text)</label><textarea id="ctx-sop" style="min-height:120px" placeholder="Paste your SOP or a summary of your research interests..."></textarea></div>
-        <div class="field"><label>GRE / GMAT Score</label><input type="text" id="ctx-greScore" placeholder="e.g. GRE 325 (V:158 Q:167)"></div>
-        <div class="field"><label>CGPA / Percentage</label><input type="text" id="ctx-cgpa" placeholder="e.g. 8.6 CGPA"></div>
-        <div class="field"><label>Research / Key Projects</label><textarea id="ctx-research" placeholder="Briefly describe your research experience or key projects..."></textarea></div>`,
+        <div class="field"><label>Program & Field of Study</label><input type="text" id="ctx-msProgram" placeholder="e.g. MSCS · MS Financial Engineering · PhD Neuroscience · MEng Robotics"></div>
+        <div class="field"><label>Target Country / Region</label>
+          <select id="ctx-targetCountry">
+            <option value="">Select</option>
+            <option>USA</option>
+            <option>UK</option>
+            <option>Canada</option>
+            <option>Germany</option>
+            <option>Australia</option>
+            <option>Singapore / Asia</option>
+            <option>Europe (Other)</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Statement of Purpose (paste text or summary)</label><textarea id="ctx-sop" style="min-height:120px" placeholder="Paste your SOP or a summary of your research interests and goals..."></textarea></div>
+        <div class="field"><label>GRE / GMAT Score</label><input type="text" id="ctx-greScore" placeholder="e.g. GRE 325 (V:158 Q:167) · GMAT 720"></div>
+        <div class="field"><label>CGPA / Percentage</label><input type="text" id="ctx-cgpa" placeholder="e.g. 8.6 CGPA · 82%"></div>
+        <div class="field"><label>Research / Key Projects</label><textarea id="ctx-research" placeholder="Briefly describe your research experience, publications, or key projects..."></textarea></div>`,
 
       upsc: `
-        <div class="field"><label>Home State</label><input type="text" id="ctx-homeState" placeholder="e.g. Maharashtra"></div>
-        <div class="field"><label>Graduation Subject</label><input type="text" id="ctx-gradSubject" placeholder="e.g. History, Engineering, Commerce"></div>
-        <div class="field"><label>Hobbies & Interests (from DAF)</label><textarea id="ctx-hobbies" placeholder="e.g. Classical music, trekking, social work — be specific"></textarea></div>`,
+        <div class="field"><label>Mains Optional Subject</label><input type="text" id="ctx-optional" placeholder="e.g. History · Public Administration · Sociology · PSIR · Geography · Law"></div>
+        <div class="field"><label>Preferred Service (optional)</label>
+          <select id="ctx-preferredService">
+            <option value="">Select (optional)</option>
+            <option>IAS – Indian Administrative Service</option>
+            <option>IPS – Indian Police Service</option>
+            <option>IFS – Indian Foreign Service</option>
+            <option>IRS – Indian Revenue Service</option>
+            <option>IFoS – Indian Forest Service</option>
+            <option>Other Central Service</option>
+          </select>
+        </div>
+        <div class="field"><label>Home State</label><input type="text" id="ctx-homeState" placeholder="e.g. Maharashtra, Rajasthan, Tamil Nadu"></div>
+        <div class="field"><label>Graduation Degree & Subject</label><input type="text" id="ctx-gradSubject" placeholder="e.g. BTech Mechanical · BA History · MBBS · LLB"></div>
+        <div class="field"><label>Hobbies & Interests (from DAF)</label><textarea id="ctx-hobbies" placeholder="e.g. Classical music, trekking, social work — paste exactly as in your DAF"></textarea></div>`,
 
       scholarship: `
-        <div class="field"><label>Key Academic Achievements</label><textarea id="ctx-achievements" placeholder="Rank, scholarships, awards, publications..."></textarea></div>
-        <div class="field"><label>Projects / Research</label><textarea id="ctx-projects" placeholder="What have you built or investigated?"></textarea></div>
-        <div class="field"><label>Target Scholarship</label><input type="text" id="ctx-targetScholarship" placeholder="e.g. PM Research Fellowship, Fulbright, Rhodes..."></div>`,
+        <div class="field"><label>Scholarship Name / Type</label>
+          <select id="ctx-scholarshipType">
+            <option value="">Select type</option>
+            <option>Government / National (e.g. PMRF, NTS, NSP)</option>
+            <option>International (e.g. Fulbright, Rhodes, Chevening, DAAD)</option>
+            <option>Private / Foundation (e.g. Tata, Inlaks, Aga Khan)</option>
+            <option>Research Fellowship (e.g. CSIR, DST, INSPIRE)</option>
+            <option>Sports / Cultural / Arts</option>
+            <option>Need-based / Financial Aid</option>
+          </select>
+        </div>
+        <div class="field"><label>Target Scholarship (specific name)</label><input type="text" id="ctx-targetScholarship" placeholder="e.g. PM Research Fellowship · Fulbright-Nehru · Rhodes Scholarship"></div>
+        <div class="field"><label>Academic Level</label>
+          <select id="ctx-academicLevel">
+            <option value="">Select</option>
+            <option>Undergraduate (UG)</option>
+            <option>Postgraduate / Masters</option>
+            <option>Doctoral / PhD</option>
+            <option>Postdoctoral</option>
+          </select>
+        </div>
+        <div class="field"><label>Field / Subject</label><input type="text" id="ctx-scholarshipField" placeholder="e.g. Computer Science · Economics · Literature · Medicine · Fine Arts"></div>
+        <div class="field"><label>Key Academic Achievements</label><textarea id="ctx-achievements" placeholder="Rank, previous scholarships, awards, publications, olympiad medals..."></textarea></div>
+        <div class="field"><label>Projects / Research / Work</label><textarea id="ctx-projects" placeholder="What have you built, investigated, or contributed to?"></textarea></div>`,
     };
 
     container.innerHTML = fields[cat] || `<p style="color:var(--text-dim);text-align:center;padding:20px 0">No additional context needed — you're all set.</p>`;
@@ -179,30 +280,62 @@ const Setup = {
     }
   },
 
+  _renderStep3() {
+    const cat = this.data.category;
+    const types = ROUND_TYPES_BY_CAT[cat] || ROUND_TYPES_BY_CAT['campus'];
+
+    // Set a sensible default round type for the category
+    const defaultType = types[0].value;
+    if (!types.find(t => t.value === this.data.roundType)) {
+      this.data.roundType = defaultType;
+    }
+
+    const container = document.getElementById('round-type-pills');
+    if (!container) return;
+    container.innerHTML = types.map(t =>
+      `<button class="option-pill${this.data.roundType === t.value ? ' selected' : ''}" data-group="roundType" data-value="${t.value}" onclick="Setup.selectOption('roundType','${t.value}')">${t.label}</button>`
+    ).join('');
+  },
+
   _readContextData() {
     const get = id => document.getElementById(id)?.value?.trim() || null;
     this.data.contextData = {
+      // campus
       degree:            get('ctx-degree'),
       cgpa:              get('ctx-cgpa'),
       branch:            get('ctx-branch'),
       companyType:       this.data.companyType || null,
+      // job
+      industry:          get('ctx-industry'),
       currentRole:       get('ctx-currentRole'),
       yearsExp:          get('ctx-yearsExp'),
       targetRole:        get('ctx-targetRole'),
       whySwitching:      get('ctx-whySwitching'),
+      // mba
       catScore:          get('ctx-catScore'),
+      mbaCurrentRole:    get('ctx-mbaCurrentRole'),
       workEx:            get('ctx-workEx'),
       gradPercent:       get('ctx-gradPercent'),
       whyMba:            get('ctx-whyMba'),
+      // ms
+      msProgram:         get('ctx-msProgram'),
+      targetCountry:     get('ctx-targetCountry'),
       sop:               get('ctx-sop'),
       greScore:          get('ctx-greScore'),
       research:          get('ctx-research'),
+      // upsc
+      optional:          get('ctx-optional'),
+      preferredService:  get('ctx-preferredService'),
       homeState:         get('ctx-homeState'),
       gradSubject:       get('ctx-gradSubject'),
       hobbies:           get('ctx-hobbies'),
+      // scholarship
+      scholarshipType:   get('ctx-scholarshipType'),
+      targetScholarship: get('ctx-targetScholarship'),
+      academicLevel:     get('ctx-academicLevel'),
+      scholarshipField:  get('ctx-scholarshipField'),
       achievements:      get('ctx-achievements'),
       projects:          get('ctx-projects'),
-      targetScholarship: get('ctx-targetScholarship'),
     };
     this.data.company = get('ctx-company') || '';
     this.data.contextSummary = Object.entries(this.data.contextData)

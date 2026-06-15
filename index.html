@@ -412,11 +412,8 @@
         <div style="display:flex;flex-direction:column;gap:20px">
           <div class="option-group">
             <div class="option-group-label">Round type</div>
-            <div class="option-pills">
-              <button class="option-pill selected" data-group="roundType" data-value="technical_screening" onclick="Setup.selectOption('roundType',this.dataset.value)">Technical Screening</button>
-              <button class="option-pill" data-group="roundType" data-value="technical_deep" onclick="Setup.selectOption('roundType',this.dataset.value)">Technical Deep Dive</button>
-              <button class="option-pill" data-group="roundType" data-value="hr" onclick="Setup.selectOption('roundType',this.dataset.value)">HR Round</button>
-              <button class="option-pill" data-group="roundType" data-value="final_round" onclick="Setup.selectOption('roundType',this.dataset.value)">Final Round</button>
+            <div class="option-pills" id="round-type-pills">
+              <!-- Populated dynamically by Setup._renderStep3() based on category -->
             </div>
           </div>
           <div class="option-group">

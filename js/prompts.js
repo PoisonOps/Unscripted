@@ -77,6 +77,20 @@ const PERSONAS = {
       initials: 'ST',
       style: 'deeply technical, low tolerance for buzzwords. Asks for code-level details and pushes back if answers are vague.'
     },
+    {
+      name: 'Nandita Rao',
+      title: 'Finance Director',
+      company: 'a financial services firm',
+      initials: 'NR',
+      style: 'precise and numbers-driven. Expects candidates to back claims with data. Asks about financial models, client impact, and risk thinking.'
+    },
+    {
+      name: 'Rohan Desai',
+      title: 'Head of Growth',
+      company: 'a consumer brand',
+      initials: 'RD',
+      style: 'fast-paced and outcome-focused. Asks about campaigns, metrics, and what the candidate personally drove vs the team.'
+    },
   ],
   job_hr: [
     {
@@ -101,6 +115,31 @@ const PERSONAS = {
       company: 'a tech company',
       initials: 'AB',
       style: "strategic and senior. Focuses on leadership, culture, and long-term trajectory. Asks about career vision and professional identity."
+    },
+  ],
+  mba_hr: [
+    {
+      name: 'Prof. Krishnamurthy',
+      title: 'Professor, Strategy',
+      company: 'IIM',
+      initials: 'PK',
+      style: 'intellectually rigorous. Challenges assumptions. Asks case-based questions and tests logical consistency.'
+    },
+    {
+      name: 'Nisha Balakrishnan',
+      title: 'Admissions Committee',
+      company: 'ISB',
+      initials: 'NB',
+      style: 'professional and probing. Focuses on career clarity, post-MBA goals, and whether this candidate is ready for a top program.'
+    },
+  ],
+  mba_final_round: [
+    {
+      name: 'Prof. Kapur',
+      title: 'Senior Faculty, OB',
+      company: 'IIM',
+      initials: 'KS',
+      style: 'old school but sharp. Focuses on why MBA, leadership stories, and current affairs relevance to business. Known for going off-script.'
     },
   ],
   mba_gd_pi: [
@@ -209,28 +248,29 @@ const CATEGORY_GUIDANCE = {
 - 1 unexpected personal question ("What do you do when you're not studying?")`
   },
   job: {
-    technical: `Core focus areas:
-- Walk me through a significant project — what was your actual contribution, not the team's
-- A technical decision you made: why X and not Y? Push back even if their answer sounds right
-- A bug or production issue they solved — how did they debug it?
-- Ask about tools/stack from their resume specifically
-- System design basic: how would they build [something relevant to their domain]
-- What code have they written they're genuinely proud of`,
-    technical_screening: `Core focus areas:
-- Walk me through a significant project — what was your actual contribution, not the team's
-- A technical decision you made: why X and not Y?
-- Ask about tools/stack from their resume specifically
-- What code have they written they're genuinely proud of`,
-    technical_deep: `Core focus areas:
-- Deep system design: scalability, trade-offs, bottlenecks
-- Architecture decisions in past projects — what and why
-- How they approach debugging and incident response
-- Code quality and engineering standards they hold themselves to`,
+    technical: `Core focus areas (IMPORTANT: adapt all questions to the candidate's industry/domain — do NOT default to software/tech questions if they are in finance, marketing, operations, law, or any other field):
+- Walk me through a significant project or achievement — what was their actual contribution, not the team's
+- A key domain decision they made: why approach X and not Y? Push back even if the answer sounds right
+- A problem or crisis they solved — how did they diagnose and resolve it? (tech = debugging, finance = model error, marketing = campaign failure, etc.)
+- Ask about specific tools, skills, and methods mentioned in their resume — not generic ones
+- Domain-relevant scenario: how would they approach [something realistic for their field and role level]
+- What output or deliverable are they genuinely proud of and why`,
+    technical_screening: `Core focus areas (adapt to the candidate's domain — NOT just software/tech):
+- Walk me through a significant project or win — their specific contribution
+- A key decision they made in their role: rationale and trade-offs
+- Ask about tools, skills, and methods from their resume specifically
+- One scenario question relevant to their target role
+- What they are strongest at and where they know they need to improve`,
+    technical_deep: `Core focus areas (adapt deeply to the candidate's domain):
+- Complex domain problem relevant to their field (architecture for tech, financial model for finance, brand strategy for marketing, case for consulting)
+- Decisions made in past projects — what, why, and what they'd change now
+- How they handle failures, ambiguity, or gaps in their expertise
+- Domain standards and quality: what does "good work" look like in their field`,
     hr: `Core focus areas:
 - Why leaving current role (probe for real reason, not polished answer)
 - What specifically about this new role/company attracts them
-- Biggest professional failure and what changed after
-- How they handle disagreement with a manager
+- Biggest professional failure and what actually changed after
+- How they handle disagreement with a manager (ask for a real example)
 - Salary expectations (ask directly)
 - Notice period and joining date`,
     final_round: `Core focus areas:
@@ -272,31 +312,37 @@ const CATEGORY_GUIDANCE = {
 - Understanding of current research landscape in their field`
   },
   upsc: {
-    personality: `Core focus areas:
-- DAF-based questions: they will know their DAF, probe specifics from it
-- Home state current events — one specific topic
-- Graduation subject + administrative relevance
-- A hobby from DAF — go deeper, find the policy connection
-- Ethical dilemma: present one, look for balanced nuanced thinking
-- Current affairs: one national + one international event
-- Administrative vision: what specific problem in India would they want to solve`,
+    personality: `Core focus areas (this is the UPSC Personality Test — 5-member board, conversational but rigorous):
+- DAF-based questions: home state, graduation subject, hobbies, optional subject — probe specifics, don't stay surface level
+- Mains Optional Subject: ask at least one question connecting their optional subject to administration or current policy
+- Home state current events — pick one specific topic, ask for their informed opinion
+- A hobby from DAF — probe deeper, find where it connects to public service or their worldview
+- Ethical dilemma: present a realistic administrative scenario, look for balanced and nuanced thinking
+- Current affairs: one national + one international event they should have followed
+- Administrative vision: what specific problem in India would they prioritise and how
+- Why preferred service (if mentioned) — test their understanding of the service's actual work`,
     hr: `Core focus areas:
-- Why civil services over other career options
-- Self-awareness about strengths and weaknesses as an administrator
-- Family background and how it shaped their perspective`
+- Why civil services over other career options they qualified for
+- Self-awareness about strengths and weaknesses as a future administrator
+- Family background and how it shaped their perspective on public service`
   },
   scholarship: {
-    interview: `Core focus areas:
-- Academic achievements: specific accomplishments, not just CGPA
-- Research or projects: what they actually built or investigated
-- Why this scholarship specifically — what makes them deserving over equally qualified peers
-- Future plan: how will this scholarship change their trajectory specifically
-- Challenges overcome: personal or financial context
-- One leadership or community impact story`,
+    interview: `Core focus areas (adapt tone and questions to the scholarship type — international scholarship panels are different from government fellowship panels):
+- Academic achievements: specific accomplishments, not just CGPA — what makes them stand out among peers with similar grades?
+- Research, projects, or domain work: what they actually built, discovered, or contributed to
+- Why THIS scholarship specifically — not a generic answer, probe whether they understand the scholarship's mission and values
+- Future plan: how will this scholarship change their trajectory — what specifically becomes possible that wasn't before?
+- Challenges overcome: personal, financial, or institutional barriers they navigated
+- Leadership or community impact: a story where they created value for others, not just themselves
+- For international scholarships: why this country/institution, post-scholarship return plans, global outlook`,
+    technical_screening: `Core focus areas:
+- Deep dive into their academic or research work — methodology, findings, impact
+- Domain knowledge relevant to their field of study
+- Intellectual curiosity: what problems excite them and why`,
     hr: `Core focus areas:
-- Personal story and journey
-- Impact and service orientation
-- How they've used resources or opportunities given to them`
+- Personal story and journey — what shaped their drive
+- Service orientation: what have they done for others with what they had?
+- How they've used past opportunities, resources, or support given to them`
   }
 };
 
@@ -363,26 +409,42 @@ function buildSystemPrompt(setup) {
   }
   if (contextData) {
     const fields = [
-      ['degree', 'Degree/Course'],
-      ['cgpa', 'CGPA/Percentage'],
-      ['branch', 'Branch/Stream/Specialisation'],
-      ['companyType', 'Target Company Type'],
-      ['currentRole', 'Current Role'],
-      ['yearsExp', 'Years of Experience'],
-      ['targetRole', 'Target Role'],
-      ['whySwitching', 'Reason for Switching'],
-      ['catScore', 'CAT Score/Percentile'],
-      ['workEx', 'Work Experience (years)'],
-      ['gradPercent', 'Graduation Percentage'],
-      ['whyMba', "Why MBA (candidate's own words)"],
-      ['sop', 'Statement of Purpose'],
-      ['greScore', 'GRE/GMAT Score'],
-      ['research', 'Research/Projects'],
-      ['homeState', 'Home State'],
-      ['gradSubject', 'Graduation Subject'],
-      ['hobbies', 'Hobbies/Interests'],
-      ['achievements', 'Key Achievements'],
-      ['projects', 'Projects'],
+      // campus
+      ['degree',            'Degree/Course'],
+      ['cgpa',              'CGPA/Percentage'],
+      ['branch',            'Branch/Stream/Specialisation'],
+      ['companyType',       'Target Company Type'],
+      // job
+      ['industry',          'Industry/Domain'],
+      ['currentRole',       'Current Role'],
+      ['yearsExp',          'Years of Experience'],
+      ['targetRole',        'Target Role'],
+      ['whySwitching',      'Reason for Switching'],
+      // mba
+      ['catScore',          'CAT/GMAT/GRE Score'],
+      ['mbaCurrentRole',    'Current/Last Role & Industry'],
+      ['workEx',            'Work Experience (years)'],
+      ['gradPercent',       'Graduation Degree, Stream & Percentage'],
+      ['whyMba',            "Why MBA (candidate's own words)"],
+      // ms
+      ['msProgram',         'MS/PhD Program & Field'],
+      ['targetCountry',     'Target Country'],
+      ['sop',               'Statement of Purpose'],
+      ['greScore',          'GRE/GMAT Score'],
+      ['research',          'Research/Projects'],
+      // upsc
+      ['optional',          'Mains Optional Subject'],
+      ['preferredService',  'Preferred Service'],
+      ['homeState',         'Home State'],
+      ['gradSubject',       'Graduation Degree & Subject'],
+      ['hobbies',           'Hobbies/Interests (from DAF)'],
+      // scholarship
+      ['scholarshipType',   'Scholarship Type'],
+      ['targetScholarship', 'Target Scholarship'],
+      ['academicLevel',     'Academic Level'],
+      ['scholarshipField',  'Field/Subject'],
+      ['achievements',      'Key Achievements'],
+      ['projects',          'Projects/Research/Work'],
     ];
     fields.forEach(([key, label]) => {
       if (contextData[key]) {
@@ -455,13 +517,20 @@ Return STRICT valid JSON only — no markdown fences, no text before or after th
 
 // ─── Persona Picker ───────────────────────────────────────────────────────────
 function pickPersona(category, roundType) {
-  // Try specific round type key first
+  // Try exact match first (e.g. "mba_gd_pi", "upsc_personality")
   const specificKey = `${category}_${roundType}`.replace(/-/g, '_');
-  const genericKey = `${category}_technical`;
+  if (PERSONAS[specificKey]) {
+    const pool = PERSONAS[specificKey];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
 
-  const pool = PERSONAS[specificKey]
-    || PERSONAS[genericKey]
-    || PERSONAS['campus_technical'];
+  // Fall back to any persona pool belonging to this category
+  const categoryPools = Object.keys(PERSONAS).filter(k => k.startsWith(category + '_'));
+  if (categoryPools.length) {
+    const pool = PERSONAS[categoryPools[0]];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
 
-  return pool[Math.floor(Math.random() * pool.length)];
+  // Last resort — campus technical (should never reach here)
+  return PERSONAS['campus_technical'][0];
 }
