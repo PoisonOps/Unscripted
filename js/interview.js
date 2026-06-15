@@ -1,3 +1,86 @@
+// ─── Waveform Visualizer ─────────────────────────────────────────────────────
+const Waveform = {
+  bars: null, _rAF: null, _analyser: null, _audioCtx: null, _stream: null, _mode: 'idle',
+
+  init() {
+    this.bars = Array.from(document.querySelectorAll('.waveform-bar'));
+    this._flat();
+  },
+
+  setSpeaking() {
+    this._stopMic(); this._mode = 'speaking'; cancelAnimationFrame(this._rAF);
+    document.getElementById('iv-waveform')?.setAttribute('data-mode', 'speaking');
+    this._animateSpeaking();
+  },
+
+  async setListening() {
+    this._mode = 'listening'; cancelAnimationFrame(this._rAF);
+    document.getElementById('iv-waveform')?.setAttribute('data-mode', 'listening');
+    await this._startMic(); this._animateMic();
+  },
+
+  setIdle() {
+    this._stopMic(); this._mode = 'idle'; cancelAnimationFrame(this._rAF);
+    document.getElementById('iv-waveform')?.setAttribute('data-mode', 'idle');
+    this._flat();
+  },
+
+  _flat() {
+    this.bars?.forEach(b => { b.style.transform = 'scaleY(0.07)'; b.style.opacity = '0.12'; });
+  },
+
+  async _startMic() {
+    try {
+      this._stream   = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      this._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const src      = this._audioCtx.createMediaStreamSource(this._stream);
+      this._analyser = this._audioCtx.createAnalyser();
+      this._analyser.fftSize = 64; this._analyser.smoothingTimeConstant = 0.75;
+      src.connect(this._analyser);
+    } catch (_) { this._analyser = null; }
+  },
+
+  _stopMic() {
+    this._stream?.getTracks().forEach(t => t.stop()); this._stream = null;
+    this._audioCtx?.close().catch(() => {}); this._audioCtx = null; this._analyser = null;
+  },
+
+  _animateSpeaking() {
+    if (this._mode !== 'speaking' || !this.bars) return;
+    const t = Date.now() / 1000, n = this.bars.length;
+    this.bars.forEach((bar, i) => {
+      const x = i / n;
+      const v = Math.sin(x * Math.PI * 5 + t * 3.2) * 0.35
+              + Math.sin(x * Math.PI * 9 + t * 5.5) * 0.20
+              + Math.sin(x * Math.PI * 2 + t * 1.8) * 0.28 + 0.22;
+      const s = Math.max(0.05, Math.min(1, v));
+      bar.style.transform = `scaleY(${s.toFixed(3)})`; bar.style.opacity = (0.45 + s * 0.55).toFixed(3);
+    });
+    this._rAF = requestAnimationFrame(() => this._animateSpeaking());
+  },
+
+  _animateMic() {
+    if (this._mode !== 'listening' || !this.bars) return;
+    const n = this.bars.length;
+    if (this._analyser) {
+      const buf = new Uint8Array(this._analyser.frequencyBinCount);
+      this._analyser.getByteFrequencyData(buf);
+      this.bars.forEach((bar, i) => {
+        const idx = Math.floor(i * buf.length / n);
+        const s   = Math.max(0.05, (buf[idx] / 255) * 0.92 + 0.05);
+        bar.style.transform = `scaleY(${s.toFixed(3)})`; bar.style.opacity = (0.38 + s * 0.62).toFixed(3);
+      });
+    } else {
+      const t = Date.now() / 1000;
+      this.bars.forEach((bar, i) => {
+        const s = 0.05 + Math.abs(Math.sin(i * 0.6 + t * 2.2)) * 0.12;
+        bar.style.transform = `scaleY(${s.toFixed(3)})`; bar.style.opacity = '0.28';
+      });
+    }
+    this._rAF = requestAnimationFrame(() => this._animateMic());
+  },
+};
+
 // ─── Interview State Machine ──────────────────────────────────────────────────
 const Interview = {
   // State
@@ -42,9 +125,10 @@ const Interview = {
     // Render interviewer info in nav
     this._renderNav();
 
-    // Init voice
+    // Init voice + waveform
     Voice.init();
     Voice.onTranscript = (text, isFinal) => this._onUserTranscript(text, isFinal);
+    Waveform.init();
 
     this.sessionStart = Date.now();
     this._startTimer();
@@ -99,7 +183,7 @@ const Interview = {
         if (this.state === 'ended') return;
         this._setState('listening');
         Voice.startListening();
-      });
+      }, this.persona.gender || 'male');
 
       // Check for interview-ending phrase from AI
       const endPhrases = ["we'll be in touch", "that's all i need", "thank you for your time", "i think we're done", "we're out of time"];
@@ -149,12 +233,9 @@ const Interview = {
     label.className = `state-label ${state}`;
     label.textContent = labels[state] || '';
 
-    if (waveform) {
-      waveform.className = 'interview-waveform';
-      if (state === 'speaking')  waveform.classList.add('active');
-      else if (state === 'listening') waveform.classList.add('listening');
-      else waveform.classList.add('idle');
-    }
+    if (state === 'speaking')        Waveform.setSpeaking();
+    else if (state === 'listening')  Waveform.setListening();
+    else                             Waveform.setIdle();
 
     if (micIndicator) {
       micIndicator.classList.toggle('hidden', state !== 'listening');

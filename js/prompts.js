@@ -1,217 +1,56 @@
 // ─── Interviewer Personas ─────────────────────────────────────────────────────
 const PERSONAS = {
   campus_technical: [
-    {
-      name: 'Vikram Nair',
-      title: 'Senior Manager, Infrastructure',
-      company: 'L&T',
-      initials: 'VN',
-      style: "formal and methodical. Expects precise technical answers. Respects candidates who admit what they don't know. Asks about IS codes, structural calculations, practical site experience."
-    },
-    {
-      name: 'Anuj Sharma',
-      title: 'Technical Lead',
-      company: 'Infosys',
-      initials: 'AS',
-      style: 'friendly but sharp. Asks about DSA, system design basics, past projects. Appreciates clarity over jargon.'
-    },
-    {
-      name: 'Rahul Mehta',
-      title: 'Hiring Manager',
-      company: 'TCS',
-      initials: 'RM',
-      style: 'structured. Asks about aptitude, communication, and technical fundamentals. Moves quickly between topics.'
-    },
-    {
-      name: 'Priyanka Rao',
-      title: 'Engineering Lead',
-      company: 'Wipro',
-      initials: 'PR',
-      style: 'direct and no-nonsense. Digs into fundamentals. Expects candidates to explain concepts from first principles, not just definitions.'
-    },
+    { name: 'Vikram Nair',   gender: 'male',   title: 'Senior Manager, Infrastructure', company: 'L&T',     initials: 'VN', style: "formal and methodical. Expects precise technical answers. Respects candidates who admit what they don't know. Asks about fundamentals, practical experience, and project decisions." },
+    { name: 'Anuj Sharma',   gender: 'male',   title: 'Technical Lead',                 company: 'Infosys', initials: 'AS', style: 'friendly but sharp. Asks about domain knowledge, past projects, and problem-solving. Appreciates clarity over jargon.' },
+    { name: 'Rahul Mehta',   gender: 'male',   title: 'Hiring Manager',                 company: 'TCS',     initials: 'RM', style: 'structured. Asks about aptitude, communication, and domain fundamentals. Moves quickly between topics.' },
+    { name: 'Priyanka Rao',  gender: 'female', title: 'Engineering Lead',               company: 'Wipro',   initials: 'PR', style: 'direct and no-nonsense. Digs into fundamentals. Expects candidates to explain concepts from first principles, not just definitions.' },
   ],
   campus_hr: [
-    {
-      name: 'Sneha Iyer',
-      title: 'HR Business Partner',
-      company: 'TCS',
-      initials: 'SI',
-      style: 'warm and perceptive. Looks for communication skills, attitude, and coachability. Asks behavioral questions using STAR format.'
-    },
-    {
-      name: 'Priya Kapoor',
-      title: 'Campus Recruiter',
-      company: 'Infosys',
-      initials: 'PK',
-      style: 'energetic and direct. Assesses cultural fit. Asks about strengths, weaknesses, and life goals.'
-    },
-    {
-      name: 'Deepak Menon',
-      title: 'HR Manager',
-      company: 'HCL',
-      initials: 'DM',
-      style: 'conversational but probing. Listens carefully and asks follow-ups. Looks for self-awareness and intellectual honesty.'
-    },
+    { name: 'Sneha Iyer',   gender: 'female', title: 'HR Business Partner', company: 'TCS',     initials: 'SI', style: 'warm and perceptive. Looks for communication skills, attitude, and coachability. Asks behavioral questions using STAR format.' },
+    { name: 'Priya Kapoor', gender: 'female', title: 'Campus Recruiter',    company: 'Infosys', initials: 'PK', style: 'energetic and direct. Assesses cultural fit. Asks about strengths, weaknesses, and life goals.' },
+    { name: 'Deepak Menon', gender: 'male',   title: 'HR Manager',          company: 'HCL',     initials: 'DM', style: 'conversational but probing. Listens carefully and asks follow-ups. Looks for self-awareness and intellectual honesty.' },
   ],
   campus_technical_screening: [
-    {
-      name: 'Anuj Sharma',
-      title: 'Technical Lead',
-      company: 'Infosys',
-      initials: 'AS',
-      style: 'friendly but sharp. Asks about DSA, system design basics, past projects. Appreciates clarity over jargon.'
-    },
+    { name: 'Anuj Sharma', gender: 'male', title: 'Technical Lead', company: 'Infosys', initials: 'AS', style: 'friendly but sharp. Asks about domain knowledge, past projects, and problem-solving. Appreciates clarity over jargon.' },
   ],
   job_technical: [
-    {
-      name: 'Arjun Bose',
-      title: 'Engineering Manager',
-      company: 'a product company',
-      initials: 'AB',
-      style: "data-driven. Wants to understand impact and decision-making in past roles. Asks 'why did you choose X over Y?'"
-    },
-    {
-      name: 'Saurabh Tiwari',
-      title: 'Senior Staff Engineer',
-      company: 'a tech startup',
-      initials: 'ST',
-      style: 'deeply technical, low tolerance for buzzwords. Asks for code-level details and pushes back if answers are vague.'
-    },
-    {
-      name: 'Nandita Rao',
-      title: 'Finance Director',
-      company: 'a financial services firm',
-      initials: 'NR',
-      style: 'precise and numbers-driven. Expects candidates to back claims with data. Asks about financial models, client impact, and risk thinking.'
-    },
-    {
-      name: 'Rohan Desai',
-      title: 'Head of Growth',
-      company: 'a consumer brand',
-      initials: 'RD',
-      style: 'fast-paced and outcome-focused. Asks about campaigns, metrics, and what the candidate personally drove vs the team.'
-    },
+    { name: 'Arjun Bose',    gender: 'male',   title: 'Engineering Manager',  company: 'a product company',       initials: 'AB', style: "data-driven. Wants to understand impact and decision-making in past roles. Asks 'why did you choose X over Y?'" },
+    { name: 'Saurabh Tiwari',gender: 'male',   title: 'Senior Staff Engineer', company: 'a tech startup',          initials: 'ST', style: 'deeply technical, low tolerance for buzzwords. Pushes back if answers are vague. Wants specifics, not narratives.' },
+    { name: 'Nandita Rao',   gender: 'female', title: 'Finance Director',      company: 'a financial services firm',initials: 'NR', style: 'precise and numbers-driven. Expects candidates to back claims with data. Asks about models, client impact, and risk thinking.' },
+    { name: 'Rohan Desai',   gender: 'male',   title: 'Head of Growth',        company: 'a consumer brand',        initials: 'RD', style: 'fast-paced and outcome-focused. Asks about campaigns, metrics, and what the candidate personally drove vs the team.' },
   ],
   job_hr: [
-    {
-      name: 'Meera Pillai',
-      title: 'Senior HR Manager',
-      company: 'a growing startup',
-      initials: 'MP',
-      style: 'conversational and intuitive. Probes motivation for switching. Asks about salary expectations and joining timeline.'
-    },
-    {
-      name: 'Kavitha Suresh',
-      title: 'Talent Acquisition Lead',
-      company: 'a mid-size company',
-      initials: 'KS',
-      style: 'perceptive and warm. Reads between the lines. Asks soft questions that reveal character and values.'
-    },
+    { name: 'Meera Pillai',   gender: 'female', title: 'Senior HR Manager',      company: 'a growing startup',  initials: 'MP', style: 'conversational and intuitive. Probes motivation for switching. Asks about salary expectations and joining timeline.' },
+    { name: 'Kavitha Suresh', gender: 'female', title: 'Talent Acquisition Lead', company: 'a mid-size company', initials: 'KS', style: 'perceptive and warm. Reads between the lines. Asks soft questions that reveal character and values.' },
   ],
   job_final_round: [
-    {
-      name: 'Arjun Bose',
-      title: 'VP Engineering',
-      company: 'a tech company',
-      initials: 'AB',
-      style: "strategic and senior. Focuses on leadership, culture, and long-term trajectory. Asks about career vision and professional identity."
-    },
+    { name: 'Arjun Bose', gender: 'male', title: 'VP Engineering', company: 'a tech company', initials: 'AB', style: "strategic and senior. Focuses on leadership, culture, and long-term trajectory. Asks about career vision and professional identity." },
   ],
   mba_hr: [
-    {
-      name: 'Prof. Krishnamurthy',
-      title: 'Professor, Strategy',
-      company: 'IIM',
-      initials: 'PK',
-      style: 'intellectually rigorous. Challenges assumptions. Asks case-based questions and tests logical consistency.'
-    },
-    {
-      name: 'Nisha Balakrishnan',
-      title: 'Admissions Committee',
-      company: 'ISB',
-      initials: 'NB',
-      style: 'professional and probing. Focuses on career clarity, post-MBA goals, and whether this candidate is ready for a top program.'
-    },
+    { name: 'Prof. Krishnamurthy', gender: 'male',   title: 'Professor, Strategy',  company: 'IIM', initials: 'PK', style: 'intellectually rigorous. Challenges assumptions. Asks case-based questions and tests logical consistency.' },
+    { name: 'Nisha Balakrishnan',  gender: 'female', title: 'Admissions Committee', company: 'ISB', initials: 'NB', style: 'professional and probing. Focuses on career clarity, post-MBA goals, and whether this candidate is ready for a top program.' },
   ],
   mba_final_round: [
-    {
-      name: 'Prof. Kapur',
-      title: 'Senior Faculty, OB',
-      company: 'IIM',
-      initials: 'KS',
-      style: 'old school but sharp. Focuses on why MBA, leadership stories, and current affairs relevance to business. Known for going off-script.'
-    },
+    { name: 'Prof. Kapur', gender: 'male', title: 'Senior Faculty, OB', company: 'IIM', initials: 'KS', style: 'old school but sharp. Focuses on why MBA, leadership stories, and current affairs relevance to business. Known for going off-script.' },
   ],
   mba_gd_pi: [
-    {
-      name: 'Prof. Krishnamurthy',
-      title: 'Professor, Strategy',
-      company: 'IIM',
-      initials: 'PK',
-      style: 'intellectually rigorous. Challenges assumptions. Asks case-based questions and tests logical consistency.'
-    },
-    {
-      name: 'Prof. Kapur',
-      title: 'Senior Faculty, OB',
-      company: 'IIM',
-      initials: 'KS',
-      style: 'old school but sharp. Focuses on why MBA, leadership stories, and current affairs relevance to business.'
-    },
-    {
-      name: 'Nisha Balakrishnan',
-      title: 'Admissions Committee',
-      company: 'ISB',
-      initials: 'NB',
-      style: 'professional and probing. Focuses on career clarity, post-MBA goals, and whether this candidate is ready for a top program.'
-    },
+    { name: 'Prof. Krishnamurthy', gender: 'male',   title: 'Professor, Strategy',  company: 'IIM', initials: 'PK', style: 'intellectually rigorous. Challenges assumptions. Asks case-based questions and tests logical consistency.' },
+    { name: 'Prof. Kapur',         gender: 'male',   title: 'Senior Faculty, OB',   company: 'IIM', initials: 'KS', style: 'old school but sharp. Focuses on why MBA, leadership stories, and current affairs relevance to business.' },
+    { name: 'Nisha Balakrishnan',  gender: 'female', title: 'Admissions Committee', company: 'ISB', initials: 'NB', style: 'professional and probing. Focuses on career clarity, post-MBA goals, and whether this candidate is ready for a top program.' },
   ],
   ms_interview: [
-    {
-      name: 'Dr. Sarah Chen',
-      title: 'Admissions Committee',
-      company: 'the university',
-      initials: 'SC',
-      style: 'academic and thorough. Probes research interests, intellectual curiosity, and fit with the program.'
-    },
-    {
-      name: 'Prof. Michael Torres',
-      title: 'Faculty Advisor',
-      company: 'the department',
-      initials: 'MT',
-      style: 'research-focused. Asks about technical depth, methodology understanding, and genuine intellectual passion.'
-    },
+    { name: 'Dr. Sarah Chen',      gender: 'female', title: 'Admissions Committee', company: 'the university', initials: 'SC', style: 'academic and thorough. Probes research interests, intellectual curiosity, and fit with the program.' },
+    { name: 'Prof. Michael Torres', gender: 'male',  title: 'Faculty Advisor',       company: 'the department', initials: 'MT', style: 'research-focused. Asks about technical depth, methodology understanding, and genuine intellectual passion.' },
   ],
   upsc_personality: [
-    {
-      name: 'Board Member',
-      title: 'UPSC Interview Panel',
-      company: 'UPSC',
-      initials: 'BM',
-      style: 'calm but probing. Asks about DAF entries, current affairs, ethical dilemmas, and administrative vision.'
-    },
-    {
-      name: 'Senior IAS Officer',
-      title: 'Panel Member',
-      company: 'UPSC Board',
-      initials: 'IAS',
-      style: 'experienced and sharp. Tests administrative understanding, public policy awareness, and composed thinking under gentle pressure.'
-    },
+    { name: 'Shri R.K. Sinha',     gender: 'male',   title: 'UPSC Board Chairman',    company: 'UPSC', initials: 'RS',  style: 'calm but probing. Asks about DAF entries, current affairs, ethical dilemmas, and administrative vision. Sets the tone for the panel.' },
+    { name: 'Dr. Anita Sharma',    gender: 'female', title: 'UPSC Panel Member',       company: 'UPSC', initials: 'AS',  style: 'composed and analytical. Tests administrative understanding and public policy awareness with gentle but incisive follow-ups.' },
+    { name: 'Brig. P.S. Rawat',    gender: 'male',   title: 'UPSC Panel Member',       company: 'UPSC', initials: 'PR',  style: 'disciplined and precise. Asks about national security, ethical dilemmas, and leadership under pressure. Expects structured answers.' },
   ],
   scholarship_interview: [
-    {
-      name: 'Dr. Amit Verma',
-      title: 'Selection Committee',
-      company: 'the scholarship board',
-      initials: 'AV',
-      style: 'focused on merit and potential. Asks about academic achievements, future plans, and why this scholarship.'
-    },
-    {
-      name: 'Prof. Lakshmi Nair',
-      title: 'Review Committee',
-      company: 'the foundation',
-      initials: 'LN',
-      style: 'warm but probing. Explores depth of purpose, resilience, and genuine impact potential beyond the CV.'
-    },
+    { name: 'Dr. Amit Verma',    gender: 'male',   title: 'Selection Committee', company: 'the scholarship board', initials: 'AV', style: 'focused on merit and potential. Asks about academic achievements, future plans, and why this scholarship.' },
+    { name: 'Prof. Lakshmi Nair',gender: 'female', title: 'Review Committee',    company: 'the foundation',        initials: 'LN', style: 'warm but probing. Explores depth of purpose, resilience, and genuine impact potential beyond the CV.' },
   ],
 };
 
